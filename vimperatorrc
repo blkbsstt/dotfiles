@@ -9,8 +9,6 @@ nnoremap J gT
 nnoremap W :emenu<Space>Window.
 set complete=slt
 set visualbell
-"let g:smooziee_scroll_amount="50"
-"let g:smooziee_scroll_interval="5"
 source! /Users/blkbsstt/.vimperatorrc.local
 
 " vim: set ft=vimperator:
