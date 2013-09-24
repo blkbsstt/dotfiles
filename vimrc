@@ -40,6 +40,7 @@ set rtp+=/usr/local/lib/python2.7/site-packages/powerline/bindings/vim
     Bundle 'airblade/vim-gitgutter'
     Bundle 'ervandew/supertab'
     Bundle 'quanganhdo/grb256'
+    Bundle 'vim-scripts/maude.vim'
     "...All your other bundles...
     if iCanHazVundle == 0
         echo "Installing Bundles, please ignore key map error messages"
