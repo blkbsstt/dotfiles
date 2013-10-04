@@ -56,8 +56,11 @@ if ! has('gui_running')
 endif
 
 let g:tex_flavor = 'latex'
-autocmd FileType tex set spell
-autocmd FileType tex let b:dispatch = 'pdflatex %'
+augroup TEX_OPTIONS
+    autocmd!
+    autocmd FileType tex set spell
+    autocmd FileType tex let b:dispatch = 'pdflatex %'
+augroup END
 
 nnoremap <F9> :Dispatch<CR>
 
