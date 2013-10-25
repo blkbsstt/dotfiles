@@ -34,12 +34,12 @@ set clipboard=unnamed
     Bundle 'endel/vim-github-colorscheme'
     Bundle 'kien/ctrlp.vim'
     Bundle 'Lokaltog/vim-easymotion'
-    Bundle 'jeetsukumaran/vim-buffergator'
     Bundle 'scrooloose/syntastic'
     Bundle 'airblade/vim-gitgutter'
     Bundle 'ervandew/supertab'
     Bundle 'quanganhdo/grb256'
     Bundle 'vim-scripts/maude.vim'
+    Bundle 'bling/vim-airline'
     "...All your other bundles...
     if iCanHazVundle == 0
         echo "Installing Bundles, please ignore key map error messages"
@@ -74,8 +74,18 @@ nnoremap <F9> :Dispatch<CR>
 " r sets automatically starting line after comment with comment leader
 set formatoptions=tcqr
 
+"" airline settings
+
+" V comment this line if using unpatched fonts V
+let g:airline_powerline_fonts = 1
+
+" settings for showing buffers on the smart tabline
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#show_buffers = 1
+"" end airline settings
+
 "" Powerline settings
-set rtp+=/usr/local/lib/python2.7/site-packages/powerline/bindings/vim
+" set rtp+=/usr/local/lib/python2.7/site-packages/powerline/bindings/vim
 
 " 256 terminal colors
 set t_Co=256
@@ -89,7 +99,7 @@ set noshowmode
 " UTF-8 encoding
 set encoding=utf-8
 
-let g:Powerline_symbols='unicode'
+" let g:Powerline_symbols='unicode'
 "" End Powerline settings
 
 " Use spaces instead of tabs
@@ -121,14 +131,14 @@ endif
 set undolevels=1000
 
 " setup swap directory
-if ifdirectory($HOME . '/.vim/swp') == 0
+if isdirectory($HOME . '/.vim/swp') == 0
     :silent !mkdir -p ~/.vim/swp >/dev/null 2>&1
 endif
 
 set dir=~/.vim/swp//
 
 " setup backupdir
-if ifdirectory($HOME . '/.vim/backup') == 0
+if isdirectory($HOME . '/.vim/backup') == 0
     :silent !mkdir -p ~/.vim/backup >/dev/null 2>&1
 endif
 
