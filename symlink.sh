@@ -13,19 +13,25 @@ files="bashrc vimrc zshrc vimperatorrc vimperatorrc.local"    # list of files/fo
 ##########
 
 # create dotfiles_old in homedir
-echo "Creating $olddir for backup of any existing dotfiles in ~"
+echo "creating directory $olddir"
 mkdir -p $olddir
-echo "...done"
-
-# change to the dotfiles directory
-echo "Changing to the $dir directory"
-cd $dir
-echo "...done"
 
 # move any existing dotfiles in homedir to dotfiles_old directory, then create symlinks 
 for file in $files; do
-    echo "Moving any existing dotfiles from ~ to $olddir"
-    mv ~/.$file ~/dotfiles_old/
-    echo "Creating symlink to $file in home directory."
-    ln -s $dir/$file ~/.$file
+    ln -s $dir/$file $dir/.$file
+    if [ -e ~/.$file ]; then #if an dotfile with file name already exists
+        if [ $dir/.$file -ef ~/.$file ]; then #if it is just a symlink already
+            rm $dir/.$file
+        else
+            mv -v ~/.$file $olddir
+            mv -v $dir/.$file ~
+        fi
+    else
+        mv -v $dir/.$file ~
+    fi
 done
+
+if [ "$(find $olddir -type d -empty)" ]; then
+    echo "no old dotfiles replaced, removing directory $olddir"
+    rm -r $olddir
+fi

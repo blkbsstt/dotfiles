@@ -15,6 +15,12 @@ PATH=$PATH:$HOME/.rvm/bin
 launchctl setenv PATH $PATH
 
 export PATH=/usr/local/bin:$PATH
+export PATH=/usr/local/maude++:$PATH
+
+PAGER=vimpager; export PAGER
+alias less=$PAGER
+alias zless=$PAGER
+alias vcat=vimcat
 
 EDITOR=vim; export EDITOR
 VISUAL=vim; export VISUAL
