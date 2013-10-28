@@ -1,3 +1,4 @@
+autoload zmv
 alias sz="source ~/.zshrc"
 
 # Powerline

@@ -18,6 +18,7 @@ set clipboard=unnamed
     call vundle#rc()
     Bundle 'gmarik/vundle'
     "Add your bundles here
+    Bundle 'majutsushi/tagbar'
     Bundle 'derekwyatt/vim-scala'
     Bundle 'tpope/vim-sensible'
     Bundle 'tpope/vim-surround'
@@ -55,6 +56,12 @@ let g:EasyMotion_leader_key = '<Leader>'
 if ! has('gui_running')
     set ttimeoutlen=10
 endif
+
+" Tagbar settings
+nnoremap <silent> <F8> :TagbarToggle<CR>
+let g:tagbar_autoclose = 1
+let g:tagbar_compact = 1
+let g:tagbar_iconchars = ['▸', '▾']
 
 " escape insert mode with jj
 inoremap jj <Esc>
