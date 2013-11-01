@@ -5,44 +5,68 @@ filetype off
 set clipboard=unnamed
 
 " Setting up Vundle - the vim plugin bundler
-    let iCanHazVundle=1
+    let VundleWasInstalled=1
     let vundle_readme=expand('~/.vim/bundle/vundle/README.md')
     if !filereadable(vundle_readme)
         echo "Installing Vundle.."
         echo ""
         silent !mkdir -p ~/.vim/bundle
         silent !git clone https://github.com/gmarik/vundle ~/.vim/bundle/vundle
-        let iCanHazVundle=0
+        let VundleWasInstalled=0
     endif
+
     set rtp+=~/.vim/bundle/vundle/
     call vundle#rc()
     Bundle 'gmarik/vundle'
-    "Add your bundles here
-    Bundle 'majutsushi/tagbar'
-    Bundle 'derekwyatt/vim-scala'
-    Bundle 'tpope/vim-sensible'
-    Bundle 'tpope/vim-surround'
-    Bundle 'tpope/vim-repeat'
-    Bundle 'tpope/vim-speeddating'
-    Bundle 'tpope/vim-abolish'
-    Bundle 'tpope/vim-endwise'
-    Bundle 'tpope/vim-unimpaired'
-    Bundle 'tpope/vim-commentary'
-    Bundle 'tpope/vim-sensible'
-    Bundle 'tpope/vim-git'
-    Bundle 'tpope/vim-markdown'
-    Bundle 'tpope/vim-dispatch'
-    Bundle 'endel/vim-github-colorscheme'
-    Bundle 'kien/ctrlp.vim'
+
+    "" Add bundles here
+
+    " leader + movement lets you jump across the file
     Bundle 'Lokaltog/vim-easymotion'
-    Bundle 'scrooloose/syntastic'
+    " shows differences with git in the gutter
     Bundle 'airblade/vim-gitgutter'
-    Bundle 'ervandew/supertab'
-    Bundle 'quanganhdo/grb256'
-    Bundle 'vim-scripts/maude.vim'
+    " nice statusline
     Bundle 'bling/vim-airline'
-    "...All your other bundles...
-    if iCanHazVundle == 0
+    " show buffers in statusline or command bar
+    Bundle 'bling/vim-bufferline'
+    " highlighting for scala
+    Bundle 'derekwyatt/vim-scala'
+    " github colorscheme
+    Bundle 'endel/vim-github-colorscheme'
+    " lets tab do autocomplete
+    Bundle 'ervandew/supertab'
+    " like ctrl+p in sublime, fuzzy file search
+    Bundle 'kien/ctrlp.vim'
+    " browse source code structure (uses ctags)
+    Bundle 'majutsushi/tagbar'
+    " nice dark layout
+    Bundle 'quanganhdo/grb256'
+    " syntax checking (shows up in gutter)
+    Bundle 'scrooloose/syntastic'
+    " great :substitute alternative, need to start using it
+    Bundle 'tpope/vim-abolish'
+    " better comment support (comment with gc)
+    Bundle 'tpope/vim-commentary'
+    " async compilation (key mappings below)
+    Bundle 'tpope/vim-dispatch'
+    " ends code structures (def ... end, if ... fi, etc)
+    Bundle 'tpope/vim-endwise'
+    " git integration
+    Bundle 'tpope/vim-fugitive'
+    " git file support
+    Bundle 'tpope/vim-git'
+    " markdown highlighting
+    Bundle 'tpope/vim-markdown'
+    " adds . repeat functionality to lots of other plugins
+    Bundle 'tpope/vim-repeat'
+    " sensible default settings
+    Bundle 'tpope/vim-sensible'
+    " lots of binds for wrapping chunks in delimiters
+    Bundle 'tpope/vim-surround'
+    " bracket [, ] mappings
+    Bundle 'tpope/vim-unimpaired'
+
+    if VundleWasInstalled == 0
         echo "Installing Bundles, please ignore key map error messages"
         echo ""
         :BundleInstall
@@ -57,57 +81,52 @@ if ! has('gui_running')
     set ttimeoutlen=10
 endif
 
-" Tagbar settings
-nnoremap <silent> <F8> :TagbarToggle<CR>
-let g:tagbar_autoclose = 1
-let g:tagbar_compact = 1
-let g:tagbar_iconchars = ['▸', '▾']
-
 " escape insert mode with jj
 inoremap jj <Esc>
+
+" don't abandon buffers
+set hidden
+
+"" Tagbar settings
+    nnoremap <silent> <F8> :TagbarToggle<CR>
+    let g:tagbar_autoclose = 1
+    let g:tagbar_compact = 1
+    let g:tagbar_iconchars = ['▸', '▾']
+"" End Tagbar settings
 
 " settings for latex
 let g:tex_flavor = 'latex'
 augroup TEX_OPTIONS
     autocmd!
     autocmd FileType tex set spell
-    autocmd FileType tex let b:dispatch = 'pdflatex %'
+    autocmd FileType tex let b:dispatch = "pdflatex %"
 augroup END
 
-nnoremap <F9> :Dispatch<CR>
+nnoremap <F9> :Dispatch!<CR>
+nnoremap <S-F9> :Dispatch<CR>
 
 " setting format options (see :h formatoptions)
 " most deal with wrapping of lines and comments
-" r sets automatically starting line after comment with comment leader
+" 'r' sets automatically starting line after comment with comment leader
 set formatoptions=tcqr
 
-"" airline settings
+"" Begin airline settings
+    " V comment this line if using unpatched fonts V
+    let g:airline_powerline_fonts = 1
+    let g:airline#extensions#bufferline#overwrite_variables = 1
 
-" V comment this line if using unpatched fonts V
-let g:airline_powerline_fonts = 1
+    " 256 terminal colors
+    set t_Co=256
 
-" settings for showing buffers on the smart tabline
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#show_buffers = 1
-"" end airline settings
+    " hides mode (INS, VIS, etc), allowing powerline to do it instead
+    set noshowmode
 
-"" Powerline settings
-" set rtp+=/usr/local/lib/python2.7/site-packages/powerline/bindings/vim
+    " UTF-8 encoding
+    set encoding=utf-8
+"" End airline settings
 
-" 256 terminal colors
-set t_Co=256
-
-" always show full statusbar
-set laststatus=2
-
-" hides mode (INS, VIS, etc), allowing powerline to do it instead
-set noshowmode
-
-" UTF-8 encoding
-set encoding=utf-8
-
-" let g:Powerline_symbols='unicode'
-"" End Powerline settings
+" don't put buffers on command bar
+let g:bufferline_echo = 0
 
 " Use spaces instead of tabs
 set expandtab
@@ -152,6 +171,7 @@ endif
 " move current dir (.) to end of list
 set backupdir-=.
 set backupdir+=.
+
 " put backupdir at start of list
 set backupdir^=~/.vim/backup/
 set backup
@@ -182,7 +202,6 @@ nnoremap <Up>    <NOP>
 nnoremap <Down>  <NOP>
 
 " Wildmenu (autocomplete) settings
-set wildmenu
 set wildmode=list:longest,full
 
 " ttym type
@@ -197,12 +216,17 @@ set number
 " visual theme settings
 set background=dark
 colo grb256
+let g:airline_theme="dark"
 
 " light mode settings
 if($ITERM_PROFILE == "Lecture")
     set background=light
     colo github
+    let g:airline_theme="light"
 endif
+
+" clears SignColumn (gutter) background
+hi clear SignColumn
 
 " set correct filetype when using fc tmpfiles
 augroup bash_options

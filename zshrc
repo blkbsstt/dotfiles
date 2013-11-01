@@ -71,6 +71,8 @@ setopt PUSHD_IGNORE_DUPS
 # 10 sec wait if deleting everything?
 setopt RM_STAR_WAIT
 
+alias mv="gmv"
+
 alias ls="gls --color=auto"
 alias l="ls -F"
 alias la="l -A"
