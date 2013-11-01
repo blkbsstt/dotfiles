@@ -24,9 +24,11 @@ set clipboard=unnamed
     " leader + movement lets you jump across the file
     Bundle 'Lokaltog/vim-easymotion'
     " lots of autocomplete stuff
-    Bundle 'Shougo/neocomplete.vim'
-    " lots of autocomplete stuff, if you don't have with-lua
-    Bundle 'Shougo/neocomplcache.vim'
+    if has('lua')
+        Bundle 'Shougo/neocomplete.vim'
+    else
+        Bundle 'Shougo/neocomplcache.vim'
+    endif
     " shows differences with git in the gutter
     Bundle 'airblade/vim-gitgutter'
     " nice statusline
@@ -110,6 +112,16 @@ else
     let g:neocomplcache_omni_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
     let g:neocomplcache_omni_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
 endif
+
+" <CR>: close popup and open a new line.
+inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+function! s:my_cr_function()
+    if has('lua')
+        return neocomplete#smart_close_popup() . "\<CR>"
+    else
+        return neocomplcache#smart_close_popup() . "\<CR>"
+    endif
+endfunction
 
 
 augroup NEOCOMPLETE
