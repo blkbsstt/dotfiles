@@ -180,9 +180,9 @@ if has('persistent_undo')
     endif
     set undodir=~/.vim/undo
     set undofile
+    set undoreload=10000
 endif
 
-set undoreload=10000
 set undolevels=1000
 
 " setup swap directory
