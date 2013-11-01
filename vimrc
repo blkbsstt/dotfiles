@@ -23,6 +23,8 @@ set clipboard=unnamed
 
     " leader + movement lets you jump across the file
     Bundle 'Lokaltog/vim-easymotion'
+    " lots of autocomplete stuff
+    Bundle 'Shougo/neocomplete.vim'
     " shows differences with git in the gutter
     Bundle 'airblade/vim-gitgutter'
     " nice statusline
@@ -35,6 +37,8 @@ set clipboard=unnamed
     Bundle 'endel/vim-github-colorscheme'
     " lets tab do autocomplete
     Bundle 'ervandew/supertab'
+    " plugin to help aligning text
+    Bundle 'godlygeek/tabular'
     " like ctrl+p in sublime, fuzzy file search
     Bundle 'kien/ctrlp.vim'
     " browse source code structure (uses ctags)
@@ -65,6 +69,8 @@ set clipboard=unnamed
     Bundle 'tpope/vim-surround'
     " bracket [, ] mappings
     Bundle 'tpope/vim-unimpaired'
+    " soft-gamma dark colorscheme
+    Bundle 'vim-scripts/xoria256.vim'
 
     if VundleWasInstalled == 0
         echo "Installing Bundles, please ignore key map error messages"
@@ -87,10 +93,26 @@ inoremap jj <Esc>
 " don't abandon buffers
 set hidden
 
+" start neocomplete
+let g:neocomplete#enable_at_startup = 1
+
+augroup NEOCOMPLETE
+    autocmd!
+    autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+    autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+    autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+    autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+    autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+augroup END
+
+if !exists('g:neocomplete#sources#omni#input_patterns')
+    let g:neocomplete#sources#omni#input_patterns = {}
+endif
+
 "" Tagbar settings
     nnoremap <silent> <F8> :TagbarToggle<CR>
     let g:tagbar_autoclose = 1
-    let g:tagbar_compact = 1
+    let g:tagbar_compact   = 1
     let g:tagbar_iconchars = ['▸', '▾']
 "" End Tagbar settings
 
@@ -113,6 +135,8 @@ set formatoptions=tcqr
 "" Begin airline settings
     " V comment this line if using unpatched fonts V
     let g:airline_powerline_fonts = 1
+
+    " enable bufferline compatibility
     let g:airline#extensions#bufferline#overwrite_variables = 1
 
     " 256 terminal colors
@@ -150,10 +174,15 @@ set wrap
 
 " persistent undo settings (allowing undo between file close / reopen)
 if has('persistent_undo')
+    let undodirectory=expand('~/.vim/undo')
+    if ! isdirectory(undodirectory)
+        :silent !mkdir -p ~/.vim/undo >/dev/null 2>&1
+    endif
     set undodir=~/.vim/undo
     set undofile
-    set undoreload=10000
 endif
+
+set undoreload=10000
 set undolevels=1000
 
 " setup swap directory
@@ -215,7 +244,7 @@ set number
 
 " visual theme settings
 set background=dark
-colo grb256
+colo xoria256
 let g:airline_theme="dark"
 
 " light mode settings
