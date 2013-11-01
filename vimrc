@@ -25,6 +25,8 @@ set clipboard=unnamed
     Bundle 'Lokaltog/vim-easymotion'
     " lots of autocomplete stuff
     Bundle 'Shougo/neocomplete.vim'
+    " lots of autocomplete stuff, if you don't have with-lua
+    Bundle 'Shougo/neocomplcache.vim'
     " shows differences with git in the gutter
     Bundle 'airblade/vim-gitgutter'
     " nice statusline
@@ -94,7 +96,21 @@ inoremap jj <Esc>
 set hidden
 
 " start neocomplete
-let g:neocomplete#enable_at_startup = 1
+if has('lua')
+    let g:neocomplete#enable_at_startup = 1
+    if !exists('g:neocomplete#sources#omni#input_patterns')
+        let g:neocomplete#sources#omni#input_patterns = {}
+    endif
+else
+    let g:neocomplcache_enable_at_startup = 1
+    if !exists('g:neocomplcache_omni_patterns')
+      let g:neocomplcache_omni_patterns = {}
+    endif
+    let g:neocomplcache_omni_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
+    let g:neocomplcache_omni_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
+    let g:neocomplcache_omni_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
+endif
+
 
 augroup NEOCOMPLETE
     autocmd!
@@ -105,9 +121,6 @@ augroup NEOCOMPLETE
     autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 augroup END
 
-if !exists('g:neocomplete#sources#omni#input_patterns')
-    let g:neocomplete#sources#omni#input_patterns = {}
-endif
 
 "" Tagbar settings
     nnoremap <silent> <F8> :TagbarToggle<CR>
