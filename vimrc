@@ -31,6 +31,8 @@ set clipboard=unnamed
     endif
     " shows differences with git in the gutter
     Bundle 'airblade/vim-gitgutter'
+    " adds mappings for movement by camelcase and underscores
+    Bundle 'bkad/CamelCaseMotion'
     " nice statusline
     Bundle 'bling/vim-airline'
     " show buffers in statusline or command bar
@@ -176,6 +178,20 @@ set formatoptions=tcqr
 
 " don't put buffers on command bar
 let g:bufferline_echo = 0
+
+" camelcasemotion mapping overrides
+
+map <silent> w <Plug>CamelCaseMotion_w
+map <silent> b <Plug>CamelCaseMotion_b
+map <silent> e <Plug>CamelCaseMotion_e
+sunmap w
+sunmap b
+sunmap e
+
+omap <silent> iw <Plug>CamelCaseMotion_iw
+xmap <silent> iw <Plug>CamelCaseMotion_iw
+omap <silent> ie <Plug>CamelCaseMotion_ie
+xmap <silent> ie <Plug>CamelCaseMotion_ie
 
 " Use spaces instead of tabs
 set expandtab
