@@ -1,9 +1,13 @@
 autoload zmv
 alias sz="source ~/.zshrc"
 
-# Powerline
-. /usr/local/lib/python2.7/site-packages/powerline/bindings/zsh/powerline.zsh
 PATH=/usr/local/share/python:$PATH
+
+# Powerline
+if [[ -n "$ISSH" ]]; then
+    POWERLINE_SIMPLE_DIVIDERS=1
+fi
+. /usr/local/lib/python2.7/site-packages/powerline/bindings/zsh/powerline.zsh
 
 # fasd
 eval "$(fasd --init auto)"
@@ -16,15 +20,26 @@ PATH=$PATH:$HOME/.rvm/bin
 launchctl setenv PATH $PATH
 
 export PATH=/usr/local/bin:$PATH
+export PATH=/usr/local/sbin:$PATH
 export PATH=/usr/local/maude++:$PATH
 
 PAGER=vimpager; export PAGER
 alias less=$PAGER
 alias zless=$PAGER
 alias vcat=vimcat
+alias scratch='vim "+Scratch"'
+
+# Alias for quicklooking a file
+alias ql='qlmanage -p "$@" > /dev/null 2>&1'
 
 EDITOR=vim; export EDITOR
 VISUAL=vim; export VISUAL
+
+JAVA_HOME=`/usr/libexec/java_home -v 1.7`
+export JAVA_HOME
+
+CATALINA_HOME=/usr/local/Cellar/tomcat/7.0.47/libexec
+export CATALINA_HOME
 
 # History
 HISTFILE=~/.zhistory
@@ -97,3 +112,5 @@ bindkey -M viins ' ' magic-space
 KEYTIMEOUT=1
 
 autoload -U age
+
+. ~/.profile

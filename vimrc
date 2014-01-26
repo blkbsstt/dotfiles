@@ -75,8 +75,12 @@ set clipboard=unnamed
     Bundle 'tpope/vim-surround'
     " bracket [, ] mappings
     Bundle 'tpope/vim-unimpaired'
+    " use :Scratch command to make a tmp buffer
+    Bundle 'vim-scripts/scratch.vim'
     " soft-gamma dark colorscheme
     Bundle 'vim-scripts/xoria256.vim'
+    " IRC client?
+    Bundle 'vim-scripts/VimIRC.vim'
 
     if VundleWasInstalled == 0
         echo "Installing Bundles, please ignore key map error messages"
@@ -161,7 +165,9 @@ set formatoptions=tcqr
 
 "" Begin airline settings
     " V comment this line if using unpatched fonts V
-    let g:airline_powerline_fonts = 1
+    if empty($ISSH)
+        let g:airline_powerline_fonts = 1
+    endif
 
     " enable bufferline compatibility
     let g:airline#extensions#bufferline#overwrite_variables = 1

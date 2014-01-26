@@ -1,5 +1,6 @@
 "3.7.1 (created: 2013/05/22 20:32:57)
 
+map <C-S-Y> :open<Space>youtube.com/feed/subscriptions<Return>
 nnoremap s :open<Space>google<Space>
 nnoremap S :tabopen<Space>google<Space>
 nnoremap k <Up>
