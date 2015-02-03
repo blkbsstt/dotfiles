@@ -1,116 +1,47 @@
-autoload zmv
-alias sz="source ~/.zshrc"
-
-PATH=/usr/local/share/python:$PATH
-
-# Powerline
-if [[ -n "$ISSH" ]]; then
-    POWERLINE_SIMPLE_DIVIDERS=1
+if [ ! -e ~/.antigen.zsh ]; then
+    curl -L https://raw.githubusercontent.com/zsh-users/antigen/master/antigen.zsh > ~/.antigen.zsh
 fi
-. /usr/local/lib/python2.7/site-packages/powerline/bindings/zsh/powerline.zsh
+source ~/.antigen.zsh
 
-# fasd
-eval "$(fasd --init auto)"
-alias v="f -e vim"
-alias o="a -e open"
+antigen use oh-my-zsh
 
-# Add RVM to PATH for scripting
-PATH=$PATH:$HOME/.rvm/bin 
+antigen theme kphoen
 
-launchctl setenv PATH $PATH
+antigen bundle git
+antigen bundle svn
+antigen bundle zsh-users/zsh-syntax-highlighting
 
-export PATH=/usr/local/bin:$PATH
-export PATH=/usr/local/sbin:$PATH
-export PATH=/usr/local/maude++:$PATH
+antigen bundle ssh-agent
 
-PAGER=vimpager; export PAGER
-alias less=$PAGER
-alias zless=$PAGER
-alias vcat=vimcat
-alias scratch='vim "+Scratch"'
+antigen bundle pip
+antigen bundle python
+antigen bundle virtualenv
 
-# Alias for quicklooking a file
-alias ql='qlmanage -p "$@" > /dev/null 2>&1'
+antigen bundle command-not-found
+antigen bundle fasd
 
-EDITOR=vim; export EDITOR
-VISUAL=vim; export VISUAL
-
-JAVA_HOME=`/usr/libexec/java_home -v 1.7`
-export JAVA_HOME
-
-CATALINA_HOME=/usr/local/Cellar/tomcat/7.0.47/libexec
-export CATALINA_HOME
-
-# History
-HISTFILE=~/.zhistory
-HISTSIZE=1000
-SAVEHIST=0
-function precmd {
-    HISTLAST=`fc -l -1 | sed -e 's/^ *//' -e 's/ *$//g'`
-    HISTLEN=`echo $HISTLAST | sed 's/[^0-9]*\([0-9]*\).*/\1/'`
-    if [[ $HISTLAST == $HISTLEN ]]; then
-        echo 0 > ~/.hist_tmp
-    else
-        echo $HISTLEN > ~/.hist_tmp
-    fi
-}
-
-# completion
-autoload -U compinit
-compinit
-
-zstyle ':completion:*' use-cache on
-zstyle ':completion:*' cache-path ~/.zsh/cache
-
-zstyle ':completion:*:*:kill:*' menu yes select
-zstyle ':completion:*:kill:*'   force-list always
-
-# suffix aliases
-autoload -U zsh-mime-setup
-zsh-mime-setup
-
-alias -s rb=ruby
-alias -s pdf=open
-alias -s tex=vim
-
-# 'dir' -> 'cd dir'
-setopt AUTO_CD
-
-# 'cd' -> 'pushd'
-setopt AUTO_PUSHD
-
-setopt PUSHD_SILENT
-setopt PUSHD_TO_HOME
-setopt PUSHD_IGNORE_DUPS
-
-# 10 sec wait if deleting everything?
-setopt RM_STAR_WAIT
-
-alias mv="gmv"
-
-alias ls="gls --color=auto"
-alias l="ls -F"
-alias la="l -A"
-alias ll="l -lh"
-alias lla="ll -A"
-alias sl="ls"
-
-alias mkdir="mkdir -pv"
-alias c="clear"
-
-alias b="popd"
-alias k="popd"
-
-alias rainbow="xxd -ps -c $(expr $(tput cols) / 2) /dev/zero | sed s/0/█/g | lolcat"
-
-setopt VI
-
+antigen bundle vi-mode
 bindkey -M viins 'jj' vi-cmd-mode
 bindkey -M vicmd 'u' undo
 bindkey -M viins ' ' magic-space
-
 KEYTIMEOUT=1
 
-autoload -U age
+# OS specific plugins
+if [[ $CURRENT_OS == 'OS X' ]]; then
+    antigen bundle brew
+    antigen bundle brew-cask
+    antigen bundle gem
+    antigen bundle osx
+elif [[ $CURRENT_OS == 'Linux' ]]; then
+    if [[ $DISTRO == 'CentOS' ]]; then
+        antigen bundle centos
+    fi
+elif [[ $CURRENT_OS == 'Cygwin' ]]; then
+    antigen bundle cygwin
+fi
 
-. ~/.profile
+antigen apply
+
+PAGER=vimpager; export PAGER
+EDITOR=vim; export EDITOR
+VISUAL=vim; export VISUAL
