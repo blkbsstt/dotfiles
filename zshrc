@@ -1,105 +1,31 @@
-autoload zmv
-alias sz="source ~/.zshrc"
+#
+# Executes commands at the start of an interactive session.
+#
+# Authors:
+#   Sorin Ionescu <sorin.ionescu@gmail.com>
+#
 
-PATH=/usr/local/share/python:$PATH
-
-# Powerline
-if [[ -n "$ISSH" ]]; then
-    POWERLINE_SIMPLE_DIVIDERS=1
+# Source Prezto.
+if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
+  source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 fi
-. /usr/local/lib/python2.7/site-packages/powerline/bindings/zsh/powerline.zsh
 
-# fasd
-eval "$(fasd --init auto)"
-alias v="f -e vim"
-alias o="a -e open"
-
-# Add RVM to PATH for scripting
-PATH=$PATH:$HOME/.rvm/bin 
+# Customize to your needs...
 
 launchctl setenv PATH $PATH
-
-export PATH=/usr/local/bin:$PATH
-export PATH=/usr/local/sbin:$PATH
-export PATH=/usr/local/maude++:$PATH
-
-PAGER=vimpager; export PAGER
-alias less=$PAGER
-alias zless=$PAGER
-alias vcat=vimcat
-alias scratch='vim "+Scratch"'
 
 # Alias for quicklooking a file
 alias ql='qlmanage -p "$@" > /dev/null 2>&1'
 
-EDITOR=vim; export EDITOR
-VISUAL=vim; export VISUAL
+export EDITOR=vim
+export VISUAL=vim
 
-JAVA_HOME=`/usr/libexec/java_home -v 1.7`
-export JAVA_HOME
-
-CATALINA_HOME=/usr/local/Cellar/tomcat/7.0.47/libexec
-export CATALINA_HOME
-
-# History
-HISTFILE=~/.zhistory
-HISTSIZE=1000
-SAVEHIST=0
-function precmd {
-    HISTLAST=`fc -l -1 | sed -e 's/^ *//' -e 's/ *$//g'`
-    HISTLEN=`echo $HISTLAST | sed 's/[^0-9]*\([0-9]*\).*/\1/'`
-    if [[ $HISTLAST == $HISTLEN ]]; then
-        echo 0 > ~/.hist_tmp
-    else
-        echo $HISTLEN > ~/.hist_tmp
-    fi
-}
-
-# completion
-autoload -U compinit
-compinit
-
-zstyle ':completion:*' use-cache on
-zstyle ':completion:*' cache-path ~/.zsh/cache
-
-zstyle ':completion:*:*:kill:*' menu yes select
-zstyle ':completion:*:kill:*'   force-list always
-
-# suffix aliases
-autoload -U zsh-mime-setup
-zsh-mime-setup
-
-alias -s rb=ruby
-alias -s pdf=open
-alias -s tex=vim
-
-# 'dir' -> 'cd dir'
-setopt AUTO_CD
-
-# 'cd' -> 'pushd'
-setopt AUTO_PUSHD
-
-setopt PUSHD_SILENT
-setopt PUSHD_TO_HOME
-setopt PUSHD_IGNORE_DUPS
-
-# 10 sec wait if deleting everything?
-setopt RM_STAR_WAIT
-
-alias mv="gmv"
-
-alias ls="gls --color=auto"
-alias l="ls -F"
-alias la="l -A"
-alias ll="l -lh"
-alias lla="ll -A"
-alias sl="ls"
-
-alias mkdir="mkdir -pv"
-alias c="clear"
-
-alias b="popd"
-alias k="popd"
+export PAGER=vimpager
+alias less=$PAGER
+alias zless=$PAGER
+alias vcat=vimcat
+alias cs498="mosh cs498 -- tmux attach || tmux new"
+alias ssh498="ssh cs498 -t -- tmux attach || tmux new"
 
 alias rainbow="xxd -ps -c $(expr $(tput cols) / 2) /dev/zero | sed s/0/█/g | lolcat"
 
@@ -113,4 +39,4 @@ KEYTIMEOUT=1
 
 autoload -U age
 
-. ~/.profile
+eval "$(rbenv init -)"

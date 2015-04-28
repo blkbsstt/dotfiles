@@ -6,102 +6,106 @@ set clipboard=unnamed
 
 " Setting up Vundle - the vim plugin bundler
     let VundleWasInstalled=1
-    let vundle_readme=expand('~/.vim/bundle/vundle/README.md')
-    if !filereadable(vundle_readme)
-        echo "Installing Vundle.."
-        echo ""
-        silent !mkdir -p ~/.vim/bundle
-        silent !git clone https://github.com/gmarik/vundle ~/.vim/bundle/vundle
+    if !isdirectory(expand("~/.vim/bundle/Vundle.vim/.git"))
+        !git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim
         let VundleWasInstalled=0
     endif
 
-    set rtp+=~/.vim/bundle/vundle/
-    call vundle#rc()
-    Bundle 'gmarik/vundle'
+    set runtimepath+=~/.vim/bundle/Vundle.vim
+
+    call vundle#begin()
+
+    Plugin 'gmarik/Vundle.vim'
 
     "" Add bundles here
 
     " leader + movement lets you jump across the file
-    Bundle 'Lokaltog/vim-easymotion'
+    " Plugin 'Lokaltog/vim-easymotion'
     " lots of autocomplete stuff
-    if has('lua')
-        Bundle 'Shougo/neocomplete.vim'
-    else
-        Bundle 'Shougo/neocomplcache.vim'
-    endif
+    Plugin 'Shougo/neocomplete.vim'
+    Plugin 'Shougo/neocomplcache.vim'
     " shows differences with git in the gutter
-    Bundle 'airblade/vim-gitgutter'
+    Plugin 'airblade/vim-gitgutter'
     " adds mappings for movement by camelcase and underscores
-    Bundle 'bkad/CamelCaseMotion'
+    Plugin 'bkad/CamelCaseMotion'
     " nice statusline
-    Bundle 'bling/vim-airline'
+    Plugin 'bling/vim-airline'
     " show buffers in statusline or command bar
-    Bundle 'bling/vim-bufferline'
+    Plugin 'bling/vim-bufferline'
     " highlighting for scala
-    Bundle 'derekwyatt/vim-scala'
-    " github colorscheme
-    Bundle 'endel/vim-github-colorscheme'
+    Plugin 'derekwyatt/vim-scala'
     " lets tab do autocomplete
-    Bundle 'ervandew/supertab'
+    Plugin 'ervandew/supertab'
     " plugin to help aligning text
-    Bundle 'godlygeek/tabular'
+    Plugin 'godlygeek/tabular'
     " like ctrl+p in sublime, fuzzy file search
-    Bundle 'kien/ctrlp.vim'
+    Plugin 'kien/ctrlp.vim'
     " browse source code structure (uses ctags)
-    Bundle 'majutsushi/tagbar'
-    " nice dark layout
-    Bundle 'quanganhdo/grb256'
-    " syntax checking (shows up in gutter)
-    Bundle 'scrooloose/syntastic'
+    Plugin 'majutsushi/tagbar'
+    " run ag from vim and shows up in split pane
+    Plugin 'rking/ag.vim'
+    " syntax checking (shows up in gutter and statusline)
+    Plugin 'scrooloose/syntastic'
     " great :substitute alternative, need to start using it
-    Bundle 'tpope/vim-abolish'
+    Plugin 'tpope/vim-abolish'
     " better comment support (comment with gc)
-    Bundle 'tpope/vim-commentary'
+    Plugin 'tpope/vim-commentary'
     " async compilation (key mappings below)
-    Bundle 'tpope/vim-dispatch'
+    Plugin 'tpope/vim-dispatch'
     " ends code structures (def ... end, if ... fi, etc)
-    Bundle 'tpope/vim-endwise'
+    Plugin 'tpope/vim-endwise'
     " git integration
-    Bundle 'tpope/vim-fugitive'
+    Plugin 'tpope/vim-fugitive'
     " git file support
-    Bundle 'tpope/vim-git'
+    Plugin 'tpope/vim-git'
     " markdown highlighting
-    Bundle 'tpope/vim-markdown'
+    Plugin 'tpope/vim-markdown'
+    " rails support
+    Plugin 'tpope/vim-rails'
     " adds . repeat functionality to lots of other plugins
-    Bundle 'tpope/vim-repeat'
+    Plugin 'tpope/vim-repeat'
     " sensible default settings
-    Bundle 'tpope/vim-sensible'
+    Plugin 'tpope/vim-sensible'
     " lots of binds for wrapping chunks in delimiters
-    Bundle 'tpope/vim-surround'
+    Plugin 'tpope/vim-surround'
     " bracket [, ] mappings
-    Bundle 'tpope/vim-unimpaired'
-    " use :Scratch command to make a tmp buffer
-    Bundle 'vim-scripts/scratch.vim'
-    " soft-gamma dark colorscheme
-    Bundle 'vim-scripts/xoria256.vim'
-    " IRC client?
-    Bundle 'vim-scripts/VimIRC.vim'
+    Plugin 'tpope/vim-unimpaired'
+    " vim-latex suite
+    Plugin 'git://git.code.sf.net/p/vim-latex/vim-latex'
+
+    " colorschemes
+    Plugin 'altercation/vim-colors-solarized'
+    Plugin 'endel/vim-github-colorscheme'
+    Plugin 'quanganhdo/grb256'
+    Plugin 'vim-scripts/xoria256.vim'
+
+    call vundle#end()
 
     if VundleWasInstalled == 0
-        echo "Installing Bundles, please ignore key map error messages"
-        echo ""
-        :BundleInstall
+        :PluginInstall
     endif
 " Setting up Vundle - the vim plugin bundler end
 
 " EasyMotion setting (the leader for easymotion is the normal leader)
-let g:EasyMotion_leader_key = '<Leader>'
+" let g:EasyMotion_leader_key = '<Leader>'
 
 " set ttimeoutlen to support jj binding
 if ! has('gui_running')
     set ttimeoutlen=10
 endif
 
+" font for airline
+set guifont=Source\ Code\ Pro\ for\ Powerline:h12
+
 " escape insert mode with jj
 inoremap jj <Esc>
 
 " don't abandon buffers
 set hidden
+
+" Set syntastic to use pylintrc (why would it need this? lame)
+" let g:syntastic_python_pylint_args = '--rcfile=/Users/blkbsstt/.pylintrc'
+let g:syntastic_python_pylint_args = '--disable=invalid-name,missing-docstring'
 
 " start neocomplete
 if has('lua')
@@ -128,7 +132,6 @@ function! s:my_cr_function()
         return neocomplcache#smart_close_popup() . "\<CR>"
     endif
 endfunction
-
 
 augroup NEOCOMPLETE
     autocmd!
@@ -287,18 +290,20 @@ set ttym=xterm2
 set mouse=a
 
 " show line numbers
+set relativenumber
 set number
+set cursorline
+set colorcolumn=80
 
-" visual theme settings
+" dark mode settings
 set background=dark
-colo xoria256
-let g:airline_theme="dark"
+colo solarized
+let g:airline_theme="solarized"
 
-" light mode settings
-if($ITERM_PROFILE == "Lecture")
+if ($ITERM_PROFILE == "Light")
     set background=light
-    colo github
-    let g:airline_theme="light"
+    colo solarized
+    let g:airline_theme="solarized"
 endif
 
 " clears SignColumn (gutter) background

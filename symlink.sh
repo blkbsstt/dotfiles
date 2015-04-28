@@ -1,6 +1,6 @@
 #!/bin/bash
 ############################
-# .make.sh
+# symlink.sh
 # This script creates symlinks from the home directory to any desired dotfiles in ~/dotfiles
 ############################
 source ~/.bashrc
@@ -22,7 +22,7 @@ function has_mv_with_backup()
 
 dir="`dirname \"$0\"`"              # relative path to script directory
 dir="`( cd \"$MY_PATH\" && pwd )`"  # absolutized and normalized
-olddir="$HOME/dotfiles_old"             # old dotfiles backup directory
+olddir="${dir}_old"                 # old dotfiles backup directory
 files="bashrc vimrc zshrc vimperatorrc vimperatorrc.local"    # list of files/folders to symlink in homedir
 
 ##########
