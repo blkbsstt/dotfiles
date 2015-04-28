@@ -12,18 +12,19 @@ function has_mv_with_backup()
     f1=$(mktemp "$0.XXXXXXXXXX")
     f2=$(mktemp "$0.XXXXXXXXXX")
     rm $f2
-    exit=$(mv --backup=t $f1 $f2 > /dev/null 2>&1)
+    mv --backup=t $f1 $f2 > /dev/null 2>&1
+    status=$?
     mv $f1 $f2 > /dev/null 2>&1
     rm $f2
-    return $exit
+    return $status
 }
 
 ########## Variables
 
 dir="`dirname \"$0\"`"              # relative path to script directory
-dir="`( cd \"$MY_PATH\" && pwd )`"  # absolutized and normalized
+dir="`( cd \"$dir\" && pwd )`"      # absolutized and normalized
 olddir="${dir}_old"                 # old dotfiles backup directory
-files="bashrc vimrc zshrc vimperatorrc vimperatorrc.local"    # list of files/folders to symlink in homedir
+files="bashrc vimrc zshrc spacemacs"    # list of files/folders to symlink in homedir
 
 ##########
 
@@ -36,6 +37,8 @@ MV='mv -v'
 if $(has_mv_with_backup); then
     MV+=' --backup=t'
 fi
+
+echo $MV
 
 # move any existing dotfiles in homedir to dotfiles_old directory, then create symlinks
 for file in $files; do
